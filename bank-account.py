@@ -88,7 +88,7 @@ print("All tests passed!")
 
 
 def getFloatInput(prompt):
-    #This is to get a float value from user
+    #This is to get a float value from user and avoid bug
     while True:
         try:
             value = float(input(prompt))
@@ -100,14 +100,14 @@ def main():
     print("Welcome to the Bank Program!\n")
 
     # Ask which account the user wants to create
-    account_type = input("Do you want a Savings or Current account? (S/C): ").strip().upper()
+    accountType = input("Do you want a Savings or Current account? (S/C): ").strip().upper()
 
-    if account_type == "S":
+    if accountType == "S":
         accountNumber = input("Enter savings account number: ")
         balance = getFloatInput("Enter initial balance for savings account: ")
         interestRate = getFloatInput("Enter interest rate (e.g., 0.05 for 5%): ")
         account = savingsAccount(accountNumber, balance, interestRate)
-    elif account_type == "C":
+    elif accountType == "C":
         accountNumber = input("Enter current account number: ")
         balance = getFloatInput("Enter initial balance for current account: ")
         transactionFee = getFloatInput("Enter transaction fee for current account: ")
@@ -117,6 +117,8 @@ def main():
         return
 
     print("\nAccount created successfully!\n")
+     # Show initial summary
+    account.printSummary() 
 
     # Menu loop
     while True:
@@ -125,7 +127,7 @@ def main():
         print("2. Withdraw")
         print("3. Check balance")
         print("4. Print account summary")
-        if account_type == "S":
+        if accountType == "S":
             print("5. Calculate interest")
             print("6. Exit")
         else:
@@ -134,22 +136,31 @@ def main():
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
-            deposit = getFloatInput("Enter amount to deposit: ")
-            account.depMoney(deposit)
-            print(f"Balance after deposit: {account.getBalance()}")
+            depositAmount = getFloatInput("Enter amount to deposit: ")
+            account.depMoney(depositAmount)
+            print("Deposit successful!")
+
+            # Polymorphic summary
+            account.printSummary()  
+
         elif choice == "2":
-            withdraw = getFloatInput("Enter amount to withdraw: ")
-            account.withdrawMoney(withdraw)
-            print(f"Balance after withdrawal: {account.getBalance()}")
+            withdrawAmount = getFloatInput("Enter amount to withdraw: ")
+            account.withdrawMoney(withdrawAmount)
+            account.printSummary()  
+
         elif choice == "3":
             print(f"Current balance: {account.getBalance()}")
+
         elif choice == "4":
-            account.printSummary()
-        elif choice == "5" and account_type == "S":
+            account.printSummary()  
+
+        elif choice == "5" and accountType == "S":
             print(f"Interest earned: {account.calcInterest()}")
-        elif (choice == "5" and account_type == "C") or (choice == "6" and account_type == "S"):
+
+        elif (choice == "5" and accountType == "C") or (choice == "6" and accountType == "S"):
             print("Exiting program. Goodbye!")
             break
+
         else:
             print("Invalid choice. Please try again.")
 
