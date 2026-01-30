@@ -1,20 +1,25 @@
 from abc import ABC, abstractmethod
 
-class Account:
+class Account(ABC):
     def __init__(self, accountNumber, balance):
         self.accountNumber = accountNumber
         self.balance = balance
 
-    @abstractmethod
-    def depMoney():
-        pass
+    
+    def depMoney(self, amount):
+        self.balance = self.balance + amount
+        return self.balance
 
     @abstractmethod
-    def withdrawMoney():
+    def withdrawMoney(self, amount):
         pass
 
+    
+    def getBalance(self):
+        return self.balance
+
     @abstractmethod
-    def getBalance():
+    def printSummary(self):
         pass
 
 class savingsAccount:
